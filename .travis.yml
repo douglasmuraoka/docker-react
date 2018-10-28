@@ -11,3 +11,20 @@ before_install:
 
 script:
   - docker run douglasmuraoka/docker-react npm run test -- --coverage
+
+# Deploys the application when a commit is merged
+# into the master branch
+deploy:
+  on:
+    branch: master
+  provider: elasticbeanstalk
+  region: "us-east-1"
+  app: "docker-react"
+  env: "DockerReact-env"
+  bucket_name: "elasticbeanstalk-us-east-1-084016223050"
+  bucket_path: "docker-react"
+  # The keys are configured as environment variables on
+  # Travis-CI
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key:
+    secure: "$AWS_SECRET_KEY"
