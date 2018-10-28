@@ -1,0 +1,34 @@
+version: '3'
+
+# services (containers to start)
+services:
+  # This is the name of the container.
+  # We can refer to this name when doing some communication between them
+  # (this will be the hostname).
+  # Ex: GET request to http://web/persons/1 will reach this container
+  web:
+    build:
+      context: . # The context is the current working directory of this image
+      dockerfile: Dockerfile.dev
+    # All ports mapping can be easily done like this
+    ports:
+      - "3000:3000"
+    # Since we want the file changes to be reflected inside
+    # of the container, we need to do some directory mapping
+    # between our local machine and the container. It is
+    # done by using volumes.
+    volumes:
+      - /app/node_modules # Defining a volume like this avoid any mapping to this directory
+      - .:/app # Maps this current directory to the /app directory
+
+  # This is another container, just to run our tests
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - .:/app
+    
+    # Overrides the command defined by the Dockerfile
+    command: ["npm", "run", "test"]

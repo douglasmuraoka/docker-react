@@ -1,0 +1,32 @@
+# This is the development Dockerfile,
+# which basically installs all the project
+# dependencies, and start the dev server
+# with the "npm run start" command.
+# To use this Dockerfile, we need to use the
+# -f option when building the image.
+FROM node:alpine
+
+# This is going to be our working directory
+# inside of the container. Note that the following
+# commands will have this directory as current
+# working directory.
+WORKDIR "/app"
+
+# Copies package.json to /app inside of the container,
+# and installs all dependencies
+COPY package.json .
+RUN npm install
+
+# Why this COPY command is separate from the above? To make
+# use of Docker's temporary image cache. When we make
+# any changes to a file inside of our project's directory
+# (except package.json), Docker won't need to install all
+# the dependencies again. It will use a cached image of
+# this building process until this step.
+# Copies all files from the project directory into
+# the /app directory (inside the container).
+COPY . .
+
+# Sets the default command ran by Docker when
+# initializing the container
+CMD ["npm", "run", "start"]
