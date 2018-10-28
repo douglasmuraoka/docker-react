@@ -1,0 +1,13 @@
+# Indicates we will need sudo permissions in
+# order to complete all its tasks.
+sudo: required
+
+# This will tell Travis that we will need Docker
+services:
+  - docker
+
+before_install:
+  - docker build -t douglasmuraoka/docker-react:latest -f Dockerfile.dev .
+
+script:
+  - docker run douglasmuraoka/docker-react npm run test -- --coverage
