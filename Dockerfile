@@ -15,4 +15,5 @@ RUN npm run build
 # the port to get access to the nginx server.
 # Example: docker run <image_id> -p 8080:80
 FROM nginx
+EXPOSE 80
 COPY --from=builder /app/build /usr/share/nginx/html
