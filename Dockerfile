@@ -3,9 +3,9 @@
 # version of the project at the /app/build directory.
 FROM node:alpine as builder
 WORKDIR "/app"
-COPY package.json .
+COPY package.json ./
 RUN npm install
-COPY . .
+COPY ./ ./
 RUN npm run build
 
 # This is the deploy phase, which uses nginx as base image,
